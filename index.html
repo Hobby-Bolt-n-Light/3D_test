@@ -19,7 +19,7 @@
   <!-- アセット管理 -->
   <a-assets>
     <img id="sky" src="assets/kloppenheim_06_puresky_small.jpg">
-    <video id="movie" src="assets/TEST-1.mp4" loop autoplay></video>
+    <video id="movie" src="assets/TEST-1.mp4" loop muted playsinline></video>
     <a-asset-item id="dome" src="assets/BOD_v3_Env.glb"></a-asset-item>
     <a-asset-item id="screen" src="assets/BOD_v3_Screen.glb"></a-asset-item>
   </a-assets>
@@ -50,12 +50,25 @@
 
 
   // 動画再生（スマホ対策）
-  /*
   document.body.addEventListener('click', () => {
     const video = document.getElementById('movie');
     video.play();
   }, { once: true });
-  */
+	
+  AFRAME.scenes[0].addEventListener('loaded', () => {
+  const model = document.querySelector('[gltf-model]');
+  model.addEventListener('model-loaded', () => {
+    const mesh = model.getObject3D('mesh');
+    mesh.traverse(obj => {
+      if (obj.name === 'ScreenMesh') {
+        obj.material.map = new THREE.VideoTexture(
+          document.getElementById('movie')
+        );
+        obj.material.needsUpdate = true;
+      }
+    });
+  });
+});
 </script>
 
 </body>
