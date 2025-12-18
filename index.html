@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Bilder's 3D Archive</title>
+
+  <!-- A-Frame -->
+  <!-- <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script> -->
+  <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+<a-scene>
+
+  <!-- アセット管理 -->
+  <a-assets>
+    <img id="sky" src="kloppenheim_06_puresky_small.jpg">
+    <video id="movie" src="assets/TEST-1.mp4" loop autoplay></video>
+    <a-asset-item id="dome" src="assets/BOD_v3_Env.glb"></a-asset-item>
+    <a-asset-item id="screen" src="assets/BOD_v3_Screen.glb"></a-asset-item>
+  </a-assets>
+
+  <!-- 空（回転で向き調整） -->
+  <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+
+	
+  <a-gltf-model
+    src="#screen"
+    position="0 0.1 0"
+    scale="2 2 2"
+	material="color: red">
+  </a-gltf-model>
+
+  <!-- 動画スクリーン -->
+  <a-plane
+    position="0 1 -4"
+    width="3"
+    height="1.7"
+    material="src: #movie">
+  </a-plane>
+
+
+</a-scene>
+
+<script>
+
+
+  // 動画再生（スマホ対策）
+  /*
+  document.body.addEventListener('click', () => {
+    const video = document.getElementById('movie');
+    video.play();
+  }, { once: true });
+  */
+</script>
+
+</body>
+</html>
