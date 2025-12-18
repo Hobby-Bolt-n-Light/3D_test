@@ -14,7 +14,7 @@
 <body>
 
 
-<a-scene>
+<a-scene id="scene">
 
   <!-- アセット管理 -->
   <a-assets>
@@ -43,14 +43,14 @@
     material="src: #movie">
   </a-plane>
 
-
 <script>
 document.body.addEventListener('click', () => {
   document.getElementById('movie').play();
 }, { once: true });
 
-AFRAME.scenes[0].addEventListener('loaded', () => {
+const scene = document.getElementById('scene');
 
+scene.addEventListener('loaded', () => {
   const model = document.querySelector('[gltf-model]');
   if (!model) {
     console.error('gltf-model が見つかりません');
@@ -59,13 +59,12 @@ AFRAME.scenes[0].addEventListener('loaded', () => {
 
   model.addEventListener('model-loaded', () => {
     const root = model.getObject3D('mesh');
-
     if (!root) {
       console.error('mesh が取得できません');
       return;
     }
 
-    // 🔍 モデル構造を全部ログ出力
+    // 🔍 構造ログ
     root.traverse(obj => {
       console.log(
         'name:', obj.name,
@@ -74,7 +73,6 @@ AFRAME.scenes[0].addEventListener('loaded', () => {
       );
     });
   });
-
 });
 </script>
 
