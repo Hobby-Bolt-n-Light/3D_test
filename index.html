@@ -44,53 +44,40 @@
   </a-plane>
 
 
-</a-scene>
 <script>
 document.body.addEventListener('click', () => {
   document.getElementById('movie').play();
 }, { once: true });
 
 AFRAME.scenes[0].addEventListener('loaded', () => {
-  const model = document.querySelector('[gltf-model]');
 
-	
-  model.addEventListener('model-loaded', () => {
-	const mesh = model.getObject3D('mesh');
-	  mesh.traverse(obj => {
-		console.log(
-		  obj.name,
-		  obj.type,
-		  obj.material
-	  );
-	});
-  });
+  const model = document.querySelector('[gltf-model]');
+  if (!model) {
+    console.error('gltf-model が見つかりません');
+    return;
+  }
 
   model.addEventListener('model-loaded', () => {
     const root = model.getObject3D('mesh');
-    const video = document.getElementById('movie');
 
-    const videoTexture = new AFRAME.THREE.VideoTexture(video);
-    videoTexture.flipY = false;
-    videoTexture.colorSpace = AFRAME.THREE.SRGBColorSpace;
-    videoTexture.needsUpdate = true;
+    if (!root) {
+      console.error('mesh が取得できません');
+      return;
+    }
 
+    // 🔍 モデル構造を全部ログ出力
     root.traverse(obj => {
-      if (obj.type === 'Mesh') {
-
-        // material が配列の場合に対応
-        const materials = Array.isArray(obj.material)
-          ? obj.material
-          : [obj.material];
-
-        materials.forEach(mat => {
-          mat.map = videoTexture;
-          mat.needsUpdate = true;
-        });
-      }
+      console.log(
+        'name:', obj.name,
+        'type:', obj.type,
+        'material:', obj.material
+      );
     });
   });
+
 });
 </script>
+
 
 
 </body>
