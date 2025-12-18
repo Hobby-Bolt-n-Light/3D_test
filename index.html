@@ -50,19 +50,20 @@ document.body.addEventListener('click', () => {
   document.getElementById('movie').play();
 }, { once: true });
 
-model.addEventListener('model-loaded', () => {
-  const mesh = model.getObject3D('mesh');
-  mesh.traverse(obj => {
-    console.log(
-      obj.name,
-      obj.type,
-      obj.material
-    );
-  });
-});
-
 AFRAME.scenes[0].addEventListener('loaded', () => {
   const model = document.querySelector('[gltf-model]');
+
+	
+  model.addEventListener('model-loaded', () => {
+	const mesh = model.getObject3D('mesh');
+	  mesh.traverse(obj => {
+		console.log(
+		  obj.name,
+		  obj.type,
+		  obj.material
+	  );
+	});
+  });
 
   model.addEventListener('model-loaded', () => {
     const root = model.getObject3D('mesh');
