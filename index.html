@@ -64,6 +64,7 @@ scene.addEventListener('loaded', () => {
 
     root.traverse(obj => {
       if (obj.type === 'Mesh' && obj.name === 'Screen') {
+		obj.material.color.setRGB(1, 1, 1);   // ← 重要
         obj.material.map = videoTexture;
         obj.material.needsUpdate = true;
 
