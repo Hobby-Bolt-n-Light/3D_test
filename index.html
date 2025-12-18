@@ -32,7 +32,7 @@
     src="#screen"
     position="0 2 0"
     scale="2 2 2"
-	material="color: red; target:Screen_Mat">
+	material="src:#movie">
   </a-gltf-model>
 
   <!-- 動画スクリーン -->
@@ -45,31 +45,41 @@
 
 
 </a-scene>
-
 <script>
+document.body.addEventListener('click', () => {
+  document.getElementById('movie').play();
+}, { once: true });
 
-
-  // 動画再生（スマホ対策）
-  document.body.addEventListener('click', () => {
-    const video = document.getElementById('movie');
-    video.play();
-  }, { once: true });
-	
-  AFRAME.scenes[0].addEventListener('loaded', () => {
+AFRAME.scenes[0].addEventListener('loaded', () => {
   const model = document.querySelector('[gltf-model]');
+
   model.addEventListener('model-loaded', () => {
-    const mesh = model.getObject3D('mesh');
-    mesh.traverse(obj => {
-      if (obj.name === 'ScreenMesh') {
-        obj.material.map = new THREE.VideoTexture(
-          document.getElementById('movie')
-        );
-        obj.material.needsUpdate = true;
+    const root = model.getObject3D('mesh');
+    const video = document.getElementById('movie');
+
+    const videoTexture = new AFRAME.THREE.VideoTexture(video);
+    videoTexture.flipY = false;
+    videoTexture.colorSpace = AFRAME.THREE.SRGBColorSpace;
+    videoTexture.needsUpdate = true;
+
+    root.traverse(obj => {
+      if (obj.type === 'Mesh') {
+
+        // material が配列の場合に対応
+        const materials = Array.isArray(obj.material)
+          ? obj.material
+          : [obj.material];
+
+        materials.forEach(mat => {
+          mat.map = videoTexture;
+          mat.needsUpdate = true;
+        });
       }
     });
   });
 });
 </script>
+
 
 </body>
 </html>
